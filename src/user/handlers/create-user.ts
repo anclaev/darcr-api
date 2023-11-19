@@ -9,6 +9,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   constructor(private repository: UserRepository) {}
 
   async execute({ dto }: CreateUserCommand): Promise<User> {
-    return this.repository.create(dto)
+    return await this.repository.create(dto)
   }
 }

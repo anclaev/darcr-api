@@ -1,3 +1,4 @@
+import { PrismaClientExceptionFilter } from 'nestjs-prisma'
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 
@@ -8,7 +9,7 @@ import { ENV } from '@common/types/env'
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule)
-
+  const httpAdapter = app.getHttpAdapter()
   const config = app.get(ConfigService)
   const logger = app.get(LoggerService)
 
@@ -27,6 +28,8 @@ const bootstrap = async () => {
     methods: '*',
     credentials: true,
   })
+
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter))
 
   await app.listen(port).finally(() => {
     logger.log(`Successfully launched on ${port} port!`)

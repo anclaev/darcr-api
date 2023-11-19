@@ -4,6 +4,8 @@ import { Prisma, User } from '@prisma/client'
 
 import { CreateUserCommand } from './commands/create-user'
 import { UpdateUserCommand } from './commands/update-user'
+import { DeleteUserCommand } from './commands/delete-user'
+
 import { GetUserQuery } from './queries/get-user'
 
 @Injectable()
@@ -23,5 +25,9 @@ export class UserService {
 
   async update(id: number, dto: Prisma.UserUpdateInput): Promise<User> {
     return await this.commandBus.execute(new UpdateUserCommand(id, dto))
+  }
+
+  async delete(id: number): Promise<User> {
+    return await this.commandBus.execute(new DeleteUserCommand(id))
   }
 }

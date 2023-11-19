@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -37,6 +38,11 @@ export class UserController {
     @Param('id') id: number,
     @Body() dto: UpdateUserDto,
   ): Promise<User> {
-    return await this.updateUser(id, dto)
+    return await this.userService.update(id, dto)
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param('id') id: number): Promise<Boolean> {
+    return !!(await this.userService.delete(id))
   }
 }
