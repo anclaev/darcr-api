@@ -14,6 +14,27 @@ export class UserRepository {
     })
   }
 
+  async find(params: {
+    skip?: number
+    take?: number
+    cursor?: number
+    where?: Prisma.UserWhereInput
+    orderBy?: Prisma.UserOrderByWithRelationInput
+  }): Promise<User[]> {
+    const { skip, take, cursor, where, orderBy } = params
+    return this.prisma.user.findMany({
+      skip,
+      take,
+      where,
+      orderBy,
+      cursor: cursor
+        ? {
+            id: Number(cursor),
+          }
+        : undefined,
+    })
+  }
+
   async create(data: Prisma.UserCreateInput): Promise<User> {
     return await this.prisma.user.create({
       data,

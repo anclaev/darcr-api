@@ -7,13 +7,14 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common'
 
 import { User } from '@prisma/client'
 
 import { UserService } from './user.service'
 
-import { CreateUserDto, UpdateUserDto } from './dtos'
+import { CreateUserDto, UpdateUserDto, GetUserListDto } from './dtos'
 
 @Controller('user')
 export class UserController {
@@ -26,6 +27,11 @@ export class UserController {
     if (!user) throw new NotFoundException('User not found')
 
     return user
+  }
+
+  @Get()
+  async getUserList(@Query() query: GetUserListDto): Promise<User[]> {
+    return await this.userService.getList(query)
   }
 
   @Post()

@@ -1,3 +1,4 @@
+import { IsNumberString, IsOptional } from 'class-validator'
 import { Prisma } from '@prisma/client'
 
 export type RestrictProperties<T, U> = {
@@ -77,6 +78,15 @@ export class LocationFilterInput {
 }
 
 export class PaginationInput {
+  @IsNumberString()
+  @IsOptional()
   take?: number
+
+  @IsNumberString()
+  @IsOptional()
   skip?: number
+
+  @IsNumberString()
+  @IsOptional()
+  cursor?: number
 }
