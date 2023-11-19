@@ -8,11 +8,11 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  telegramId Int  @unique
-  username String
-  first_name  String?
-  last_name String?
-  photo_url String?
-  auth_date DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  telegramId Int      @unique
+  username   String
+  first_name String?
+  last_name  String?
+  photo_url  String?
+  auth_date  DateTime @default(now())
 }
