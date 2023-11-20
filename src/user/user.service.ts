@@ -45,4 +45,9 @@ export class UserService {
   async delete(id: number): Promise<User> {
     return await this.commandBus.execute(new DeleteUserCommand(id))
   }
+
+  serializeBigInt(bigint: BigInt | number) {
+    const int = Number.parseInt(bigint.toString())
+    return int ?? bigint.toString()
+  }
 }

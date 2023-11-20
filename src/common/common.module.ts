@@ -7,8 +7,8 @@ import { Global, Module } from '@nestjs/common'
 import { PrismaModule } from 'nestjs-prisma'
 import { CqrsModule } from '@nestjs/cqrs'
 
-import { LoggerService } from './services/logger.service'
-import { ConfigService } from './services/config.service'
+import { LoggerService, SessionService, ConfigService } from './services'
+import { UserRepository } from 'src/user/user.repository'
 
 import { ENV } from './types/env'
 
@@ -37,7 +37,7 @@ import { ENV } from './types/env'
       inject: [RootConfigService],
     }),
   ],
-  providers: [ConfigService, LoggerService],
-  exports: [ConfigService, LoggerService],
+  providers: [ConfigService, LoggerService, SessionService, UserRepository],
+  exports: [ConfigService, LoggerService, SessionService],
 })
 export class CommonModule {}

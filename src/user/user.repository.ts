@@ -14,6 +14,14 @@ export class UserRepository {
     })
   }
 
+  async findByTelegramId(telegramId: number): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: {
+        telegramId,
+      },
+    })
+  }
+
   async find(params: {
     skip?: number
     take?: number
