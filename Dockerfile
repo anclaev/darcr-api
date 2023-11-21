@@ -11,7 +11,9 @@ WORKDIR /api
 
 COPY package.json ./
 
-RUN yarn install --silent
+RUN yarn install silent
+
+RUN yarn prisma generate
 
 # Stage 2: Сборка проекта
 FROM node:${node_version} AS builder
