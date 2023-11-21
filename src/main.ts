@@ -1,28 +1,39 @@
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { PrismaClientExceptionFilter } from 'nestjs-prisma'
+import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 
 import { AppModule } from './app.module'
 
-async function bootstrap() {
+import { ConfigService, LoggerService } from '@services'
+import { ENV } from '@common/types/env'
+
+const bootstrap = async () => {
   const app = await NestFactory.create(AppModule)
+  const httpAdapter = app.getHttpAdapter()
+  const config = app.get(ConfigService)
+  const logger = app.get(LoggerService)
 
-  const config = new DocumentBuilder()
-    .setTitle('Darcr API')
-    .setDescription('')
-    .setVersion('0.0.1')
-    .build()
+  const allowedOrigins = config.val<string>(ENV.ALLOWED_ORIGINS).split(',')
+  const port = config.port()
 
-  const doc = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, doc)
-
-  const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? '').split(',')
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  )
 
   app.enableCors({
     origin: allowedOrigins,
     allowedHeaders: '*',
     methods: '*',
+    credentials: true,
   })
 
-  await app.listen(3000)
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter))
+
+  await app.listen(port).finally(() => {
+    logger.log(`Successfully launched on ${port} port!`)
+  })
 }
+
 bootstrap()
