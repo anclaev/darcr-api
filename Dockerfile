@@ -10,6 +10,7 @@ LABEL description="Darcr"
 WORKDIR /api
 
 COPY package.json ./
+COPY prisma ./
 
 RUN yarn install --silent && yarn prisma generate
 
