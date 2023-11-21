@@ -11,7 +11,7 @@ WORKDIR /api
 
 COPY package.json ./
 
-RUN yarn install silent
+RUN yarn install —-silent
 
 RUN yarn prisma generate
 
