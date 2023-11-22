@@ -17,6 +17,11 @@ export class AuthController {
 
     res.setHeader('Set-Cookie', cookieToString(cookie))
 
+    if (user.telegramId)
+      user.telegramId = this.serializeBigInt(
+        user.telegramId,
+      ) as unknown as bigint
+
     return res.send(user)
   }
 
@@ -28,5 +33,10 @@ export class AuthController {
     res.setHeader('Set-Cookie', cookie)
 
     return res.sendStatus(200)
+  }
+
+  serializeBigInt(bigint: BigInt | number) {
+    const int = Number.parseInt(bigint.toString())
+    return int ?? bigint.toString()
   }
 }
