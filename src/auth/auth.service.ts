@@ -18,6 +18,7 @@ import { TelegramUserPayload } from '@common/types/dto'
 import { ConfigService } from '@common/services'
 import { ENV } from '@common/types/env'
 import { CreateUserCommand } from 'src/user/commands/create-user'
+import { serializeBigInt } from '@common/utils/serialize'
 
 @Injectable()
 export class AuthService {
@@ -46,7 +47,7 @@ export class AuthService {
         user,
         cookie: this.getCookieWithToken({
           id,
-          telegramId,
+          telegramId: serializeBigInt(telegramId) as unknown as bigint,
           username,
         }),
       }
@@ -63,7 +64,11 @@ export class AuthService {
     const { id, telegramId, username } = newUser
 
     return {
-      cookie: this.getCookieWithToken({ id, telegramId, username }),
+      cookie: this.getCookieWithToken({
+        id,
+        telegramId: serializeBigInt(telegramId) as unknown as bigint,
+        username,
+      }),
       user: newUser,
     }
   }
