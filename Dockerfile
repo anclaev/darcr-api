@@ -10,7 +10,7 @@ LABEL description="Darcr"
 WORKDIR /api
 
 COPY package.json ./
-COPY prisma ./
+COPY prisma ./prisma
 
 RUN yarn install --silent && yarn prisma generate
 
@@ -34,9 +34,11 @@ ENV NODE_ENV=${node_env}
 
 COPY --from=deps /api/node_modules ./node_modules
 COPY --from=deps /api/package.json ./package.json
+COPY --from=deps /api/prisma ./prisma
+
 COPY --from=builder /api/dist ./dist
 
 EXPOSE 3001
 
-CMD ["npm", "run", "start:production"]
+CMD ["npm", "run", "start:prod"]
 
