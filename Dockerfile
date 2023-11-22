@@ -40,5 +40,5 @@ COPY --from=builder /api/dist ./dist
 
 EXPOSE 3001
 
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:migrate:prod"]
 
