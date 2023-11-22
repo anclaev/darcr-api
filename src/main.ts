@@ -1,6 +1,7 @@
 import { PrismaClientExceptionFilter } from 'nestjs-prisma'
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
+import * as cookieParser from 'cookie-parser'
 
 import { AppModule } from './app.module'
 
@@ -14,6 +15,7 @@ const bootstrap = async () => {
   const logger = app.get(LoggerService)
 
   const allowedOrigins = config.val<string>(ENV.ALLOWED_ORIGINS).split(',')
+  const cookieSecret = config.val<string>(ENV.COOKIE_SECRET)
   const port = config.port()
 
   app.useGlobalPipes(
@@ -30,6 +32,8 @@ const bootstrap = async () => {
   })
 
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter))
+
+  app.use(cookieParser(cookieSecret))
 
   await app.listen(port).finally(() => {
     logger.log(`Successfully launched on ${port} port!`)
