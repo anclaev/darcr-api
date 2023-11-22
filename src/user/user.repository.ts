@@ -14,7 +14,7 @@ export class UserRepository {
     })
   }
 
-  async findByTelegramId(telegramId: number): Promise<User | null> {
+  async findByTelegramId(telegramId: number | bigint): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: {
         telegramId,

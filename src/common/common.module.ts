@@ -8,6 +8,7 @@ import { PrismaModule } from 'nestjs-prisma'
 import { CqrsModule } from '@nestjs/cqrs'
 
 import { LoggerService, SessionService, ConfigService } from './services'
+
 import { UserRepository } from 'src/user/user.repository'
 
 import { ENV } from './types/env'

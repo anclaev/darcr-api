@@ -50,7 +50,14 @@ export class UserController {
 
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<User> {
-    return await this.userService.create(dto)
+    const user = await this.userService.create(dto)
+
+    if (user.telegramId)
+      user.telegramId = this.userService.serializeBigInt(
+        user.telegramId,
+      ) as unknown as bigint
+
+    return user
   }
 
   @Put(':id')

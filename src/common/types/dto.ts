@@ -1,4 +1,4 @@
-import { IsNumberString, IsOptional } from 'class-validator'
+import { IsNumberString, IsOptional, IsString } from 'class-validator'
 import { Prisma } from '@prisma/client'
 
 export type RestrictProperties<T, U> = {
@@ -89,4 +89,31 @@ export class PaginationInput {
   @IsNumberString()
   @IsOptional()
   cursor?: number
+}
+
+export class TelegramUserPayload {
+  @IsNumberString()
+  id: number
+
+  @IsString()
+  @IsOptional()
+  auth_date: number
+
+  @IsString()
+  username: string
+
+  @IsString()
+  @IsOptional()
+  first_name?: string
+
+  @IsString()
+  @IsOptional()
+  last_name?: string
+
+  @IsString()
+  hash?: string
+
+  @IsString()
+  @IsOptional()
+  photo_url?: string
 }
