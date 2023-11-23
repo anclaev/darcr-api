@@ -48,7 +48,6 @@ export class AuthService {
         cookie: this.getCookieWithToken({
           id,
           telegramId: serializeBigInt(telegramId) as unknown as bigint,
-          username,
         }),
       }
     }
@@ -67,7 +66,6 @@ export class AuthService {
       cookie: this.getCookieWithToken({
         id,
         telegramId: serializeBigInt(telegramId) as unknown as bigint,
-        username,
       }),
       user: newUser,
     }

@@ -16,7 +16,6 @@ export interface Cookie {
 export interface TokenPayload {
   id: number
   telegramId: bigint
-  username: string
 }
 
 export interface SignInPayload {
