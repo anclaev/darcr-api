@@ -2,7 +2,8 @@ import { User } from '@prisma/client'
 
 type Environment = 'development' | 'production' | 'staging' | undefined
 
-export const environment: Environment = process.env.MODE as Environment
+export const environment: Environment =
+  (process.env.MODE as Environment) ?? 'development'
 
 export interface Cookie {
   key: string

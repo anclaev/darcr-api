@@ -16,11 +16,14 @@ import { UserService } from './user.service'
 
 import { CreateUserDto, UpdateUserDto, GetUserListDto } from './dtos'
 
+import { Auth } from '@common/decorators'
+
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get(':id')
+  @Auth()
   async getUser(@Param('id') id: number): Promise<User> {
     const user = await this.userService.getById(id)
 
@@ -35,6 +38,7 @@ export class UserController {
   }
 
   @Get()
+  @Auth()
   async getUserList(@Query() query: GetUserListDto): Promise<User[]> {
     const users = await this.userService.getList(query)
 
@@ -49,6 +53,7 @@ export class UserController {
   }
 
   @Post()
+  @Auth()
   async createUser(@Body() dto: CreateUserDto): Promise<User> {
     const user = await this.userService.create(dto)
 
@@ -61,6 +66,7 @@ export class UserController {
   }
 
   @Put(':id')
+  @Auth()
   async updateUser(
     @Param('id') id: number,
     @Body() dto: UpdateUserDto,
@@ -69,6 +75,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @Auth()
   async deleteUser(@Param('id') id: number): Promise<Boolean> {
     return !!(await this.userService.delete(id))
   }

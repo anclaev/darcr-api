@@ -35,14 +35,14 @@ export class AuthService {
   private tokenExpiration = 7200
 
   async signIn(dto: TelegramUserPayload): Promise<SignInPayload> {
-    const isValidRequest = this.checkHash(dto)
+    const isValidRequest = this.isProduction ? this.checkHash(dto) : true
 
     if (!isValidRequest) throw new UnauthorizedException('Invalid credentials')
 
     const user = await this.checkExistUser(dto.id)
 
     if (user) {
-      const { telegramId, id, username } = user
+      const { telegramId, id } = user
       return {
         user,
         cookie: this.getCookieWithToken({
@@ -54,18 +54,19 @@ export class AuthService {
 
     const newUser = (await this.commandBus.execute<CreateUserCommand>(
       new CreateUserCommand({
-        ...dto,
         telegramId: dto.id,
-        auth_date: `${dto.auth_date}`,
+        auth_date: dto.auth_date ? `${dto.auth_date}` : undefined,
+        first_name: dto.first_name ? dto.first_name : undefined,
+        last_name: dto.last_name ? dto.last_name : undefined,
+        photo_url: dto.photo_url ? dto.photo_url : undefined,
+        username: dto.username ? dto.username : undefined,
       }),
     )) as User
 
-    const { id, telegramId, username } = newUser
-
     return {
       cookie: this.getCookieWithToken({
-        id,
-        telegramId: serializeBigInt(telegramId) as unknown as bigint,
+        id: newUser.id,
+        telegramId: serializeBigInt(newUser.telegramId) as unknown as bigint,
       }),
       user: newUser,
     }
