@@ -15,10 +15,11 @@ import {
 } from '@common/types/interfaces'
 
 import { TelegramUserPayload } from '@common/types/dto'
+import { serializeBigInt } from '@common/utils/serialize'
 import { ConfigService } from '@common/services'
 import { ENV } from '@common/types/env'
+
 import { CreateUserCommand } from 'src/user/commands/create-user'
-import { serializeBigInt } from '@common/utils/serialize'
 
 @Injectable()
 export class AuthService {
@@ -92,6 +93,16 @@ export class AuthService {
     return `Authentication=; HttpOnly; ${
       this.isProduction ? 'Secure; ' : ''
     }Path=/; Max-Age=0`
+  }
+
+  public getTelegramToken(origin: string): string {
+    const allowedOrigins = this.config
+      .val<string>(ENV.ALLOWED_ORIGINS)
+      .split(',')
+
+    if (allowedOrigins.indexOf(origin) === -1) throw new UnauthorizedException()
+
+    return this.config.val<string>(ENV.TELEGRAM_TOKEN)
   }
 
   private async checkExistUser(id: number): Promise<User | null> {
