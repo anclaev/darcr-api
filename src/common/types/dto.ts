@@ -100,6 +100,7 @@ export class TelegramUserPayload {
   auth_date: number
 
   @IsString()
+  @IsOptional()
   username: string
 
   @IsString()

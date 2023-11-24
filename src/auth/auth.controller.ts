@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common'
+import { Body, Controller, Get, Headers, Post, Res } from '@nestjs/common'
 import { Response } from 'express'
 
 import { serializeBigInt } from '@common/utils/serialize'
@@ -11,6 +11,11 @@ import { AuthService } from './auth.service'
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get('token')
+  async getTelegamToken(@Headers() headers: Headers & { origin: string }) {
+    return this.authService.getTelegramToken(headers.origin)
+  }
 
   @Post('sign-in')
   async signIn(@Body() payload: TelegramUserPayload, @Res() res: Response) {
