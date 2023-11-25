@@ -10,8 +10,9 @@ export interface Cookie {
   value: string
   httpOnly: boolean
   secure: boolean
-  path: string
   maxAge: number
+  path?: string
+  sameSite?: string
 }
 
 export interface TokenPayload {

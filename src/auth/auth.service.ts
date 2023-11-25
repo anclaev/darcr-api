@@ -78,13 +78,12 @@ export class AuthService {
       secret: this.config.val<string>(ENV.JWT_SECRET),
       expiresIn: `${this.tokenExpiration}s`,
     })
-
     return {
       key: 'Authentication',
       value: token,
+      path: '/',
       httpOnly: true,
       secure: this.isProduction,
-      path: '/',
       maxAge: this.tokenExpiration,
     }
   }
